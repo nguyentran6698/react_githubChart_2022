@@ -10,27 +10,31 @@ const GithubProvider = ({ children }) => {
   const [githubUser, setGithubUser] = useState(mockUser);
   const [followers, setFollowers] = useState(mockFollowers);
   const [repos, setRepos] = useState(mockRepos);
+  // request
+  const [request, setRequest] = useState(0);
+  const [limit, setLimit] = useState(50);
+  const [loading, setLoading] = useState(false);
+  // errors
+  const [error, setError] = useState({ show: false, msg: "" });
+  // toggleError functio
+  function toggleError(show = false, msg = "") {
+    setError({ show, msg });
+  }
   const checkRequests = () => {
     axios(`${rootUrl}/rate_limit`)
       .then(({ data }) => {
+        console.log(data);
         let {
-          rate: { remaining },
+          rate: { remaining, limit },
         } = data;
         setRequest(remaining);
+        setLimit(limit);
         if (remaining === 0) {
           toggleError(true, "you have exceeded your hourly rate limit");
         }
       })
       .catch((err) => console.log(err));
   };
-  // request
-  const [request, setRequest] = useState(0);
-  const [loading, setLoading] = useState(false);
-  // errors
-  const [error, setError] = useState({ show: false, msg: "" });
-  function toggleError(show = false, msg = "") {
-    setError({ show, msg });
-  }
   const searchGitHubUser = async (user) => {
     toggleError();
     setLoading(true);
@@ -71,6 +75,7 @@ const GithubProvider = ({ children }) => {
         request,
         error,
         searchGitHubUser,
+        limit,
       }}
     >
       {children}

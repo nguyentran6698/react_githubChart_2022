@@ -18,9 +18,8 @@ function AuthWrapper({ children }) {
       </Wrapper>
     );
   }
-  if (isAuthenticated) {
-    return <>{children}</>;
-  }
+
+  return <>{children}</>;
 }
 
 const Wrapper = styled.section`

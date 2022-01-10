@@ -1,17 +1,22 @@
 import React from "react";
 import styled from "styled-components";
 import { useAuth0 } from "@auth0/auth0-react";
+import { User } from ".";
 
 const Navbar = () => {
   const { isAuthenticated, loginWithRedirect, user, logout } = useAuth0();
   const isUser = isAuthenticated && user;
-  console.log(user);
   return (
     <Wrapper>
       {isUser && user.picture && <img src={user.picture} alt={user.name} />}
-      {isUser && user.name && (
+      {isUser && (
         <h4>
-          Welcome, <strong>{user.name.toUpperCase || "john doe"}</strong>
+          Welcome,{" "}
+          <strong>
+            {user.name === ""
+              ? user.nickname.toUpperCase()
+              : user.name.toUpperCase()}
+          </strong>
         </h4>
       )}
       {isUser ? (

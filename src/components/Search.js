@@ -4,7 +4,8 @@ import { MdSearch } from "react-icons/md";
 import { GithubContext, useGlobalContext } from "../context/context";
 const Search = () => {
   const [user, setUser] = React.useState("");
-  const { request, error, searchGitHubUser, loading } = useGlobalContext();
+  const { request, error, searchGitHubUser, loading, limit } =
+    useGlobalContext();
   // get things from global context
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -34,7 +35,9 @@ const Search = () => {
             {request > 0 && !loading && <button type="submit">submit</button>}
           </div>
         </form>
-        <h3>requests : 60/60</h3>
+        <h3>
+          requests : {request}/{limit}
+        </h3>
       </Wrapper>
     </section>
   );
